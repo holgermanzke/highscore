@@ -1,10 +1,7 @@
-const MongoClient = require("mongodb").MongoClient;
 const dotenv = require("dotenv");
 dotenv.config();
+const MongoClient = require("mongodb").MongoClient;
 const express = require("express");
-const app = express();
-
-app.use(express.static("public"));
 
 // Connection URL
 console.log(process.env.MONGO_URL);
@@ -25,3 +22,13 @@ async function initDB() {
   client.close();
 }
 initDB();
+
+const app = express();
+const port = 8085;
+app.get("/", (request, response) => {
+  response.end("Hello World");
+});
+
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`);
+});
