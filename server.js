@@ -1,11 +1,17 @@
 const MongoClient = require("mongodb").MongoClient;
-const assert = require("assert");
+const dotenv = require("dotenv");
+dotenv.config();
+const express = require("express");
+const app = express();
+
+app.use(express.static("public"));
 
 // Connection URL
-const url = "mongodb://localhost:27017";
+console.log(process.env.MONGO_URL);
+const url = process.env.MONGO_URL;
 
 // Database Name
-const dbName = "intro";
+const dbName = "highscore";
 
 // Create a new MongoClient
 const client = new MongoClient(url);
@@ -15,14 +21,7 @@ async function initDB() {
   await client.connect();
   console.log("Connected successfully to server");
   const db = client.db(dbName);
-  const cursor = db.collection("users").find();
-  const inventories = await cursor.toArray();
-  // console.log(inventories);
-  const inventory = await db
-    .collection("users")
-    .findOne({ firstName: "Franziska" });
-  console.log(inventory);
+  db.collection("users").insertOne({ name: "Holger" });
   client.close();
 }
-
 initDB();
